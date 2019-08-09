@@ -23,7 +23,8 @@ def no_penultimate_sevens_naive(n:int) -> int:
             res += i
     return res
 
-#print(no_penultimate_sevens_naive(100))
+def no_penultimate_sevens_naive_list_comp(n:int) -> int:
+    return sum([i for i in range(n + 1) if (i < 10 or str(i)[-2] != '7')])
 
 HUNDRED_BASE = 100
 THOUSANDS_BASE = 1000
@@ -38,6 +39,9 @@ def no_penultimate_sevens_constant(n:int) -> int:
     # define the sequence sum function with optional start parameter
     seq_sum = lambda n,start=0: n * (n + 1) // 2 if start == 0 else seq_sum(n) - seq_sum(start - 1)
 
+    # a more generalized implmentation is below, but will need to explain it later
+    #seq_sum = lambda n,start=0,difference=1: ((n+1) // 2) * (2*start + (n)*difference)
+
     # get the total sum from 0 to n
     all_nums_total = seq_sum(n)
 
@@ -51,6 +55,7 @@ def no_penultimate_sevens_constant(n:int) -> int:
     return all_nums_total - hundreds_total - seventies_total
 
 for i in range(1,100):
+    assert(no_penultimate_sevens_naive(i * HUNDRED_BASE) == no_penultimate_sevens_naive_list_comp(i * HUNDRED_BASE))
     assert(no_penultimate_sevens_naive(i * HUNDRED_BASE) == no_penultimate_sevens_constant(i * HUNDRED_BASE))
 
 print("ALL CHECKS PASSED")
